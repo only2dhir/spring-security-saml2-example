@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: sso-demo-project
+  #default spring security config
+  #security:
+   # saml2:
+    #  relyingparty:
+     #   registration:
+      #    demo:
+       #     identityprovider:
+        #      entity-id: https://idp.example.com/issuer
+         #     verification.credentials:
+          #      - certificate-location: "classpath:idp.crt"
+           #   singlesignon.url: https://idp.example.com/issuer/sso
+            #  singlesignon.sign-request: false
+devglan:
+  saml:
+    #success-url: https://www.devglan.com/auth/saml/postLogin
+    metadataLocation: /saml/idp-metadata.xml
+    assertingParty:
+      entityId: https://idp.identityserver
+      serviceLocation: https://idp.identityserver/saml/sso
+    relyingParty:
+      registrationId: devglan123
+      entityId: devglanmetadata
+      baseUrl: https://www.devglan.com/
+      redirectUrl: ${devglan.saml.relyingParty.baseUrl}/SSO/mysamlresponse
+
