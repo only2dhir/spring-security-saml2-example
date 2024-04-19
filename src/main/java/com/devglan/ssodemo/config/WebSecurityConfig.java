@@ -6,8 +6,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.saml2.provider.service.authentication.AbstractSaml2AuthenticationRequest;
 import org.springframework.security.saml2.provider.service.registration.*;
+import org.springframework.security.saml2.provider.service.web.Saml2AuthenticationRequestRepository;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -23,6 +26,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .saml2Login(saml2 -> saml2.loginProcessingUrl("/SSO/mysamlresponse")
+                        .failureHandler(authenticationFailureHandler())
                         .relyingPartyRegistrationRepository(relyingPartyRegistration()));
         return http.build();
     }
@@ -40,5 +44,17 @@ public class WebSecurityConfig {
                                 .singleSignOnServiceBinding(Saml2MessageBinding.POST))
                         .build();
         return new InMemoryRelyingPartyRegistrationRepository(registration);
+    }
+
+    @Bean
+    SimpleUrlAuthenticationFailureHandler authenticationFailureHandler() {
+        SimpleUrlAuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
+        failureHandler.setDefaultFailureUrl("/error");
+        return failureHandler;
+    }
+
+    @Bean
+    Saml2AuthenticationRequestRepository<AbstractSaml2AuthenticationRequest> authenticationRequestRepository() {
+        return new CustomSaml2AuthenticationRequestConfig();
     }
 }

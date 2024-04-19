@@ -29,11 +29,18 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-saml2-service-provider</artifactId>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.opensaml</groupId>
 			<artifactId>opensaml-core</artifactId>
 			<version>4.3.0</version>
+		</dependency>-->
+		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>4.2.5</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
